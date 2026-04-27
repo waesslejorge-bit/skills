@@ -13,7 +13,7 @@ import { runList } from './list.ts';
 import { removeCommand, parseRemoveOptions } from './remove.ts';
 import { sanitizeMetadata } from './sanitize.ts';
 import { runSync, parseSyncOptions } from './sync.ts';
-import { track } from './telemetry.ts';
+import { track, flushTelemetry } from './telemetry.ts';
 import { fetchSkillFolderHash, getGitHubToken } from './skill-lock.ts';
 import { readLocalLock, type LocalSkillLockEntry } from './local-lock.ts';
 import {
@@ -960,4 +960,4 @@ async function main(): Promise<void> {
   }
 }
 
-main();
+main().finally(() => flushTelemetry().then(() => process.exit(0)));
